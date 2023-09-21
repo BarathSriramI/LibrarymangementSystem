@@ -77,4 +77,14 @@ public class StudentController {
     {
         return  studentservice.allmale();
     }
+
+
+    // how to return the names of all the male student without iterating over them
+    // create a custom find by in jpa repository
+
+    @GetMapping("/allmalenames")
+    public List<String> malenames()
+    {
+            return studentservice.malenames();
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.LMS.service;
 
 import com.example.LMS.Enum.CardStatus;
+import com.example.LMS.Enum.Gender;
 import com.example.LMS.model.LibraryCard;
 import com.example.LMS.model.Student;
 import com.example.LMS.repository.StudentRepository;
@@ -85,5 +86,15 @@ public class Studentservice {
 
         }
         return allmale;
+    }
+
+    public List<String> malenames() {
+
+        List<Student> studentlist= studentRepository.findByGender(Gender.MALE);
+
+        List<String> malenames=new ArrayList<>();
+
+        for(Student s : studentlist) malenames.add(s.getName());
+        return malenames;
     }
 }
