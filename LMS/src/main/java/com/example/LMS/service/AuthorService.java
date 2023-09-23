@@ -1,5 +1,7 @@
 package com.example.LMS.service;
 
+import com.example.LMS.DTO.requestDTO.StudentRequest;
+import com.example.LMS.DTO.responseDTO.StudentResponse;
 import com.example.LMS.model.Author;
 import com.example.LMS.model.Book;
 import com.example.LMS.repository.AuthorRepository;

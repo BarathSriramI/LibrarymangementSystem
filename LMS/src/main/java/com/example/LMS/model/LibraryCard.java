@@ -8,7 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @FieldDefaults(level= AccessLevel.PRIVATE)
@@ -38,5 +40,9 @@ public class LibraryCard {
     // creating a forign key in the child table with primarykey of the parent
     @JoinColumn
     Student student;
+
+        @OneToMany(mappedBy = "librarycard",cascade = CascadeType.ALL)
+        List<Transaction> transactionList = new ArrayList<>();
+
 
 }

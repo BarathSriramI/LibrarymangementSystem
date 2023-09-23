@@ -1,5 +1,7 @@
 package com.example.LMS.controller;
 
+import com.example.LMS.DTO.requestDTO.StudentRequest;
+import com.example.LMS.DTO.responseDTO.StudentResponse;
 import com.example.LMS.Enum.CardStatus;
 import com.example.LMS.model.LibraryCard;
 import com.example.LMS.model.Student;
@@ -21,10 +23,9 @@ public class StudentController {
 
     // add a student
     @PostMapping("/add")
-    public ResponseEntity addstudent ( @RequestBody Student student)
+    public ResponseEntity addstudent (@RequestBody StudentRequest studentRequest)
     {
-
-      String responsestudent= studentservice.addstudent(student);
+        StudentResponse  responsestudent= studentservice.addstudent(studentRequest);
       return new ResponseEntity<>(responsestudent,HttpStatus.CREATED);
 
     }

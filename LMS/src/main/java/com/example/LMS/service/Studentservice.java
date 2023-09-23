@@ -1,5 +1,7 @@
 package com.example.LMS.service;
 
+import com.example.LMS.DTO.requestDTO.StudentRequest;
+import com.example.LMS.DTO.responseDTO.StudentResponse;
 import com.example.LMS.Enum.CardStatus;
 import com.example.LMS.Enum.Gender;
 import com.example.LMS.model.LibraryCard;
@@ -19,7 +21,14 @@ public class Studentservice {
     @Autowired
     StudentRepository studentRepository;
 
-    public String addstudent(Student student) {
+    public StudentResponse addstudent(StudentRequest studentRequest) {
+
+        // convert the DTO into models
+        Student student = new Student();
+        student.setName(studentRequest.getName());
+        student.setEmailid(studentRequest.getEmailid());
+        student.setAge(studentRequest.getAge());
+        student.setGender(studentRequest.getGender());
 
         // when we are adding the student we need to create library card also
 
@@ -32,7 +41,15 @@ public class Studentservice {
 
         Student studentsaved = studentRepository.save(student);
 
-        return "Student has been Created";
+//        convert model into response dto
+
+        StudentResponse studentResponse= new StudentResponse();
+        studentResponse.setRegNo(studentsaved.getRegNo());
+        studentResponse.setName(studentsaved.getName());
+        studentResponse.setMessage("Student has been successfully created");
+        studentResponse.setLibrarycardNo(studentsaved.getLibraryCard().getLibrarycardNo());
+
+        return studentResponse;
     }
 
     public Student getstudent(int regNo) {

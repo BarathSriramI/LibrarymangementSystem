@@ -6,6 +6,9 @@ import jdk.jfr.Enabled;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -27,8 +30,13 @@ public class Book {
     @Enumerated(EnumType.STRING)
     Genre genre;
 
+    boolean isIssued;
+
     @ManyToOne
     @JoinColumn
     Author author;
+
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL )
+    List<Transaction> transactionList = new ArrayList<>();
 
 }

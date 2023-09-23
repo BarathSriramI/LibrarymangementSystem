@@ -34,6 +34,7 @@ public class BookService {
         Author author = optionalauthor.get();
 
         book.setAuthor(author);
+        book.setIssued(false);
         author.getBook().add(book);
 
         // here we save Author --the parent so the book will also be saved
