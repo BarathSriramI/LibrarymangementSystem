@@ -1,5 +1,6 @@
 package com.example.LMS.service;
 
+import com.example.LMS.DTO.responseDTO.Bookresponse;
 import com.example.LMS.Enum.Genre;
 import com.example.LMS.Exception.AuthorNotFoundException;
 import com.example.LMS.Exception.BookNotFound;
@@ -92,5 +93,44 @@ public class BookService {
             authorname.add(book.getAuthor().getName());
         }
         return authorname;
+    }
+
+    public List<Bookresponse> bookbasedongenreAndcostgreater(String genre, double cost) {
+        List<Book> bookList= bookRepository.booksbasedongenreAndcostgreater(genre,cost);
+
+        // need to return a list pf book response dto
+
+        List<Bookresponse> bookresponseslist = new ArrayList<>();
+        for(Book book : bookList)
+        {
+            Bookresponse bookresponse = new Bookresponse();
+            bookresponse.setBookname(book.getBookName());
+            bookresponse.setGenre(book.getGenre());
+            bookresponse.setCost(book.getBookCost());
+            bookresponse.setAuthorName(book.getAuthor().getName());
+
+            bookresponseslist.add(bookresponse);
+        }
+        return bookresponseslist;
+    }
+
+
+    public List<Bookresponse> bookbasedongenreAndcostgreaterhgl(Genre genre, double cost) {
+        List<Book> bookList= bookRepository.booksbasedongenreAndcostgreaterhql(genre,cost);
+
+        // need to return a list pf book response dto
+
+        List<Bookresponse> bookresponseslist = new ArrayList<>();
+        for(Book book : bookList)
+        {
+            Bookresponse bookresponse = new Bookresponse();
+            bookresponse.setBookname(book.getBookName());
+            bookresponse.setGenre(book.getGenre());
+            bookresponse.setCost(book.getBookCost());
+            bookresponse.setAuthorName(book.getAuthor().getName());
+
+            bookresponseslist.add(bookresponse);
+        }
+        return bookresponseslist;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.LMS.service;
 
 import com.example.LMS.DTO.requestDTO.StudentRequest;
+import com.example.LMS.DTO.responseDTO.Librarycardresponse;
 import com.example.LMS.DTO.responseDTO.StudentResponse;
 import com.example.LMS.Enum.CardStatus;
 import com.example.LMS.Enum.Gender;
@@ -47,7 +48,16 @@ public class Studentservice {
         studentResponse.setRegNo(studentsaved.getRegNo());
         studentResponse.setName(studentsaved.getName());
         studentResponse.setMessage("Student has been successfully created");
-        studentResponse.setLibrarycardNo(studentsaved.getLibraryCard().getLibrarycardNo());
+
+        //create a library card DTo
+        Librarycardresponse librarycardresponse = new Librarycardresponse();
+
+        // add the required inn libarary card dto
+        librarycardresponse.setIssudate(studentsaved.getLibraryCard().getIssudate());
+        librarycardresponse.setLibrarycardNo(studentsaved.getLibraryCard().getLibrarycardNo());
+        librarycardresponse.setStatus(studentsaved.getLibraryCard().getStatus());
+
+        studentResponse.setLibrarycardresponse(librarycardresponse);
 
         return studentResponse;
     }

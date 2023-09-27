@@ -1,5 +1,6 @@
 package com.example.LMS.controller;
 
+import com.example.LMS.DTO.responseDTO.Bookresponse;
 import com.example.LMS.Enum.Genre;
 import com.example.LMS.Exception.AuthorNotFoundException;
 import com.example.LMS.model.Book;
@@ -55,13 +56,28 @@ public class BookController {
     }
 
     //give names of all the books in a particular genre and cost greater than x
-        @GetMapping("/booksingenreandcost")
-    public ResponseEntity booksingenreandcost( @RequestParam("genre") Genre genre, @RequestParam("cost") int cost)
-    {
-         List <String> bookname = bookService.booksingenreandcost(genre,cost);
+//        @GetMapping("/booksingenreandcost")
+//    public ResponseEntity booksingenreandcost( @RequestParam("genre") Genre genre, @RequestParam("cost") int cost)
+//    {
+//         List <String> bookname = bookService.booksingenreandcost(genre,cost);
+//
+//         if(bookname.isEmpty()) return  new ResponseEntity<>("no books found",HttpStatus.NOT_FOUND);
+//         return new ResponseEntity<>(bookname,HttpStatus.FOUND);
+//    }
 
-         if(bookname.isEmpty()) return  new ResponseEntity<>("no books found",HttpStatus.NOT_FOUND);
-         return new ResponseEntity<>(bookname,HttpStatus.FOUND);
+    @GetMapping("/sortbyGenreandCost")
+    public List<Bookresponse> booksbasedongenreAndcostgreater(@RequestParam("genre") String genre,
+                                                              @RequestParam("cost") double cost)
+    {
+                List<Bookresponse> bookresponses = bookService.bookbasedongenreAndcostgreater(genre,cost);
+                return bookresponses;
+    }
+    @GetMapping("/sortbyGenreandCosthql")
+    public List<Bookresponse> booksbasedongenreAndcostgreaterhgl(@RequestParam("genre") Genre genre,
+                                                              @RequestParam("cost") double cost)
+    {
+        List<Bookresponse> bookresponses = bookService.bookbasedongenreAndcostgreaterhgl(genre,cost);
+        return bookresponses;
     }
 
     //give names of books having pages between a and b

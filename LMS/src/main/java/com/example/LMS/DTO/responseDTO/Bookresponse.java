@@ -1,5 +1,6 @@
 package com.example.LMS.DTO.responseDTO;
 
+import com.example.LMS.Enum.Genre;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,16 +10,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class StudentResponse {
+public class Bookresponse {
 
-    int RegNo;
-
-    String name;
-
-    String message;
-
-//    String librarycardNo;
-
-    Librarycardresponse librarycardresponse;
+    String bookname;
+    double cost;
+    Genre genre;
+    String authorName;
 
 }
