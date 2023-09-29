@@ -1,8 +1,10 @@
 package com.example.LMS.DTO.responseDTO;
 
-import com.example.LMS.Enum.Genre;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.Date;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -10,11 +12,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Bookresponse {
 
+public class Transactionresponse {
+
+    String transactionnumber;
+    int studentId;
+    Date transactiondate;
     String bookname;
-    double cost;
-    Genre genre;
-    String authorName;
+    String authorname;
 
 }

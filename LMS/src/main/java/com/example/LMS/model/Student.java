@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Getter
 @Entity
+@Builder
 
 public class Student {
 

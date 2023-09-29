@@ -8,6 +8,7 @@ import com.example.LMS.model.Author;
 import com.example.LMS.model.Book;
 import com.example.LMS.repository.AuthorRepository;
 import com.example.LMS.repository.BookRepository;
+import com.example.LMS.transformer.BookTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -103,13 +104,7 @@ public class BookService {
         List<Bookresponse> bookresponseslist = new ArrayList<>();
         for(Book book : bookList)
         {
-            Bookresponse bookresponse = new Bookresponse();
-            bookresponse.setBookname(book.getBookName());
-            bookresponse.setGenre(book.getGenre());
-            bookresponse.setCost(book.getBookCost());
-            bookresponse.setAuthorName(book.getAuthor().getName());
-
-            bookresponseslist.add(bookresponse);
+            bookresponseslist.add(BookTransformer.booktobookresponse(book));
         }
         return bookresponseslist;
     }
@@ -123,13 +118,7 @@ public class BookService {
         List<Bookresponse> bookresponseslist = new ArrayList<>();
         for(Book book : bookList)
         {
-            Bookresponse bookresponse = new Bookresponse();
-            bookresponse.setBookname(book.getBookName());
-            bookresponse.setGenre(book.getGenre());
-            bookresponse.setCost(book.getBookCost());
-            bookresponse.setAuthorName(book.getAuthor().getName());
-
-            bookresponseslist.add(bookresponse);
+            bookresponseslist.add(BookTransformer.booktobookresponse(book));
         }
         return bookresponseslist;
     }

@@ -8,6 +8,8 @@ import com.example.LMS.Enum.Gender;
 import com.example.LMS.model.LibraryCard;
 import com.example.LMS.model.Student;
 import com.example.LMS.repository.StudentRepository;
+import com.example.LMS.transformer.LibraryCardTransformer;
+import com.example.LMS.transformer.StudentTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,44 +24,25 @@ public class Studentservice {
     @Autowired
     StudentRepository studentRepository;
 
-    public StudentResponse addstudent(StudentRequest studentRequest) {
+public StudentResponse addstudent(StudentRequest studentRequest) {
 
-        // convert the DTO into models
-        Student student = new Student();
-        student.setName(studentRequest.getName());
-        student.setEmailid(studentRequest.getEmailid());
-        student.setAge(studentRequest.getAge());
-        student.setGender(studentRequest.getGender());
+//        create a student using builders and storing them in transformers
 
-        // when we are adding the student we need to create library card also
+    Student student = StudentTransformer.studentrequesttoStudent(studentRequest);
 
-        LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setLibrarycardNo(String.valueOf(UUID.randomUUID()));
-        libraryCard.setStatus(CardStatus.Active);
-        libraryCard.setStudent(student);
+    LibraryCard libraryCard = LibraryCardTransformer.inputcardforstudent(student);
 
-        student.setLibraryCard(libraryCard);
+    student.setLibraryCard(libraryCard);
 
-        Student studentsaved = studentRepository.save(student);
+    Student studentsaved = studentRepository.save(student);
 
-//        convert model into response dto
+    StudentResponse studentResponse = StudentTransformer.studenttostudentresponse(studentsaved);
 
-        StudentResponse studentResponse= new StudentResponse();
-        studentResponse.setRegNo(studentsaved.getRegNo());
-        studentResponse.setName(studentsaved.getName());
-        studentResponse.setMessage("Student has been successfully created");
+    Librarycardresponse librarycardresponse = LibraryCardTransformer.createcardfromsavedstudent(studentsaved);
 
-        //create a library card DTo
-        Librarycardresponse librarycardresponse = new Librarycardresponse();
+     studentResponse.setLibrarycardresponse(librarycardresponse);
 
-        // add the required inn libarary card dto
-        librarycardresponse.setIssudate(studentsaved.getLibraryCard().getIssudate());
-        librarycardresponse.setLibrarycardNo(studentsaved.getLibraryCard().getLibrarycardNo());
-        librarycardresponse.setStatus(studentsaved.getLibraryCard().getStatus());
-
-        studentResponse.setLibrarycardresponse(librarycardresponse);
-
-        return studentResponse;
+    return studentResponse;
     }
 
     public Student getstudent(int regNo) {

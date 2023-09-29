@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Builder
 public class StudentResponse {
 
     int RegNo;

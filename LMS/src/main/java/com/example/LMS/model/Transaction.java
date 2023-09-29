@@ -1,5 +1,6 @@
 package com.example.LMS.model;
 
+import com.example.LMS.Enum.Transactionstatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +14,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Builder
 public class Transaction {
 
     @Id
@@ -25,6 +26,7 @@ public class Transaction {
     @CreationTimestamp
     Date transactiondate;
 
+    Transactionstatus transactionstatus;
     @ManyToOne
     @JoinColumn
     Book book;
