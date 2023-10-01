@@ -56,4 +56,42 @@ public class TransactionService {
 
 
     }
+
+    public Transactionresponse returnbook(int bookId, int studentId) {
+
+        // check bookid is avlid
+
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+
+        if(optionalBook.isEmpty()) throw new RuntimeException("Invalid Book Id");
+
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+
+        if(studentOptional.isEmpty()) throw new studentNotFoundExecption("Invalid Student Id");
+
+        Book book = optionalBook.get();
+        Student student = studentOptional.get();
+
+        if(!book.isIssued()) throw new RuntimeException("Book is not issued");
+
+        Transaction savedtransaction= null;
+
+        for(Transaction transaction : student.getLibraryCard().getTransactionList())
+        {
+            if(!transaction.getBook().equals(book)) throw  new RuntimeException("The transaction doesnot match");
+
+             savedtransaction = transactionRepository
+                    .save(TransactionTransformer.createtransaction(book,student));
+        }
+        book.setIssued(false);
+        book.getTransactionList().add(savedtransaction);
+
+
+        student.getLibraryCard().getTransactionList().add(savedtransaction);
+
+        bookRepository.save(book);
+        studentRepository.save(student);
+
+        return TransactionTransformer.transactionToTransactionresponse(savedtransaction,book);
+    }
 }

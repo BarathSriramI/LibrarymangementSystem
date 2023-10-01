@@ -11,6 +11,8 @@ import com.example.LMS.repository.StudentRepository;
 import com.example.LMS.transformer.LibraryCardTransformer;
 import com.example.LMS.transformer.StudentTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ public class Studentservice {
 
     @Autowired
     StudentRepository studentRepository;
+
+    @Autowired
+    JavaMailSender javaMailSender;
 
 public StudentResponse addstudent(StudentRequest studentRequest) {
 
@@ -41,15 +46,27 @@ public StudentResponse addstudent(StudentRequest studentRequest) {
     Librarycardresponse librarycardresponse = LibraryCardTransformer.createcardfromsavedstudent(studentsaved);
 
      studentResponse.setLibrarycardresponse(librarycardresponse);
+     // need to send mail  when person is added
+
+    String text = "Congrats!!" + studentsaved.getName() +" has been created \n" +
+            "The student RegNo is" +studentsaved.getRegNo();
+
+    SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+    simpleMailMessage.setFrom("springbackendtest@gmail.com");
+    simpleMailMessage.setTo(studentsaved.getEmailid());
+    simpleMailMessage.setSubject("Account creation");
+    simpleMailMessage.setText(text);
+
+    javaMailSender.send(simpleMailMessage);
 
     return studentResponse;
     }
 
-    public Student getstudent(int regNo) {
+    public StudentResponse getstudent(int regNo) {
         Optional<Student> studentOptional = studentRepository.findById(regNo);
 
         if (!studentOptional.isEmpty()) {
-            return studentOptional.get();
+            return StudentTransformer.studenttostudentresponse(studentOptional.get());
         }
         return null;
     }
