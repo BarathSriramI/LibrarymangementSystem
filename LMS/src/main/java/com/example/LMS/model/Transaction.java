@@ -27,6 +27,7 @@ public class Transaction {
     Date transactiondate;
 
     Transactionstatus transactionstatus;
+
     @ManyToOne
     @JoinColumn
     Book book;

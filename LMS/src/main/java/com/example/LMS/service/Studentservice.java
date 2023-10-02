@@ -1,10 +1,13 @@
 package com.example.LMS.service;
 
 import com.example.LMS.DTO.requestDTO.StudentRequest;
+import com.example.LMS.DTO.responseDTO.Getstudentresponse;
 import com.example.LMS.DTO.responseDTO.Librarycardresponse;
+import com.example.LMS.DTO.responseDTO.Response;
 import com.example.LMS.DTO.responseDTO.StudentResponse;
 import com.example.LMS.Enum.CardStatus;
 import com.example.LMS.Enum.Gender;
+import com.example.LMS.Exception.studentNotFoundExecption;
 import com.example.LMS.model.LibraryCard;
 import com.example.LMS.model.Student;
 import com.example.LMS.repository.StudentRepository;
@@ -48,7 +51,7 @@ public StudentResponse addstudent(StudentRequest studentRequest) {
      studentResponse.setLibrarycardresponse(librarycardresponse);
      // need to send mail  when person is added
 
-    String text = "Congrats!!" + studentsaved.getName() +" has been created \n" +
+    String text = "Congrats!  Account has been created for " + studentsaved.getName() +"\n" +
             "The student RegNo is" +studentsaved.getRegNo();
 
     SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -62,23 +65,37 @@ public StudentResponse addstudent(StudentRequest studentRequest) {
     return studentResponse;
     }
 
-    public StudentResponse getstudent(int regNo) {
+    // what should we return
+    //name,regno,emailid,age,gender,librarycardNo,transactionlist
+    public Getstudentresponse getstudent(int regNo) {
         Optional<Student> studentOptional = studentRepository.findById(regNo);
 
         if (!studentOptional.isEmpty()) {
-            return StudentTransformer.studenttostudentresponse(studentOptional.get());
+           Getstudentresponse studentResponse= StudentTransformer.getstudenttostduentresponse(studentOptional.get());
+
+           Librarycardresponse librarycardresponse =  LibraryCardTransformer.createcardfromsavedstudent(studentOptional.get());
+
+           return studentResponse;
+
         }
         return null;
     }
 
-    public boolean deletestudent(int regNo) {
+    public Response deletestudent(int regNo) {
         Optional<Student> studentOptional = studentRepository.findById(regNo);
 
-        if (studentOptional.isEmpty())
-            return false;
 
-        studentRepository.delete(studentOptional.get());
-        return true;
+        if (studentOptional.isEmpty()){
+             return Response.builder()
+                    .found(false)
+                    .message("Student with the RegNo  " +regNo +" not found")
+                    .build();
+        }
+             studentRepository.delete(studentOptional.get());
+           return  Response.builder()
+                    .found(true)
+                    .message("Student with the RegNo  " +regNo +" has been deleted")
+                   .build();
     }
 
     public Student updatestudentage(int regNo, int newage) {

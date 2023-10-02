@@ -1,6 +1,8 @@
 package com.example.LMS.controller;
 
 import com.example.LMS.DTO.requestDTO.StudentRequest;
+import com.example.LMS.DTO.responseDTO.Getstudentresponse;
+import com.example.LMS.DTO.responseDTO.Response;
 import com.example.LMS.DTO.responseDTO.StudentResponse;
 import com.example.LMS.Enum.CardStatus;
 import com.example.LMS.model.LibraryCard;
@@ -34,7 +36,7 @@ public class StudentController {
     @GetMapping("/get")
     public ResponseEntity getstudent (@RequestParam("id") int regNo)
     {
-        StudentResponse responsestudent = studentservice.getstudent(regNo);
+         Getstudentresponse responsestudent = studentservice.getstudent(regNo);
 
         if(responsestudent!=null) return new ResponseEntity<>(responsestudent,HttpStatus.FOUND);
 
@@ -46,11 +48,12 @@ public class StudentController {
 
     public ResponseEntity deletestudent(@RequestParam("id") int regNo)
     {
-        Boolean deleteresponse = studentservice.deletestudent(regNo);
 
-        if(deleteresponse) return new ResponseEntity<>("Student deleted ",HttpStatus.ACCEPTED);
+           Response deleteresponse= studentservice.deletestudent(regNo);
 
-        return new ResponseEntity<>("Inavlid RegNo",HttpStatus.BAD_REQUEST);
+           if(deleteresponse.getFound()) return new ResponseEntity<>(deleteresponse.getMessage(),HttpStatus.OK);
+
+           return new ResponseEntity<>(deleteresponse,HttpStatus.NOT_FOUND);
     }
 
     //update the age of student by getting regNo
